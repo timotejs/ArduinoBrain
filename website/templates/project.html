@@ -1,0 +1,93 @@
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'home' %}">Home</a>
+</li>
+<li class="nav-item dropdown active">
+    <a class="nav-link dropdown-toggle" href="blink_led.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{ project.name }}<span class="sr-only">(current)</span>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="{% url 'project' 1 %}">Blink led</a>
+        <a class="dropdown-item" href="{% url 'project' 2 %}">Running led</a>
+        <a class="dropdown-item" href="#">Button</a>
+        <a class="dropdown-item" href="#">LCD Display</a>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#">About</a>
+</li>
+{% endblock %}
+
+{% block header %}{{ project.name }}{% endblock %}
+
+{% block content %}
+<img src="{{ project.image }}" class="img-fluid" style="max-width: 100%; height: auto;" alt="Project image">
+
+<h4 class="mt-5">Parts you will need for this project:</h4>
+
+<div class="list-group ml-lg-5">
+
+    {% for part in parts %}
+
+    <div class="list-group-item">
+        <div class="row align-items-center">
+            <div class="col-lg-3">
+                x{{ part.quantity }}
+            </div>
+            <div class="col-lg-5">
+                <img src="{{ part.image }}" class="img-fluid ml-4 mr-2" style="width: 40px; height: 30px;" alt="Part image">
+                {{ part.name }}
+            </div>
+            <div class="col-lg-4">
+                <a class="btn ml-5" href="{{ part.link }}"><img src="{% static 'images/buy.svg' %}" class="img-fluid" alt="Buy"></a>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<h4 class="mt-4">Offer:</h4>
+
+<ul class="list-group ml-lg-5">
+    <li class="list-group-item">
+        <div class="row align-items-center">
+            <div class="col-lg-4">
+                <img src="{% static 'images/starter_kit.jpg' %}" class="img-fluid mr-2" style="width: 40px; height: 40px;" alt="Arduino">
+                Arduino starter kit
+            </div>
+            <div class="col-lg-4">
+                <a class="btn ml-5" href="#"><img src="{% static 'images/buy.svg' %}" class="img-fluid" style="width: 26px; height: 26px;" alt="Buy"></a>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<hr>
+
+<h2 class="mt-5">Schematic</h2>
+
+<img src="{{ project.schematic }}" class="img-fluid ml-lg-5" style="max-width: 100%; height: auto;" alt="Project schematic">
+
+<hr>
+
+<h2 class="mt-5">Arduino Code</h2>
+
+<div class="row justify-content-end">
+    <button class="btn btn-white" onclick="copyToClipboard('#blink-led-code')" style="color: black !important;">
+        <img src="{% static 'images/clipboard.svg' %}" class="img-fluid mr-2" style="width: 20px; height: 20px;" alt="Copy to clipboard">
+        Copy the code
+    </button>
+</div>
+
+<pre class="mt-0 mb-5">
+    <code>{{ project.code |safe }}</code>
+</pre>
+{% endblock %}
